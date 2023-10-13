@@ -516,6 +516,15 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
      */
     createActions(extras, mBuilder, resources, packageName, notId);
 
+    // Since android Oreo notification channel is needed.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannel channel = new NotificationChannel(
+        "default_notification_channel_id", "default_notification_channel_id", NotificationManager.IMPORTANCE_DEFAULT);
+      channel.setDescription("default_notification_channel_id");
+      mNotificationManager.createNotificationChannel(channel);
+      mBuilder.setChannelId("default_notification_channel_id");
+    }
+
     mNotificationManager.notify(appName, notId, mBuilder.build());
   }
 
